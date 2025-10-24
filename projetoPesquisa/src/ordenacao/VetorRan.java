@@ -15,7 +15,6 @@ public class VetorRan {
             System.out.print("Digite a quantidade de números inteiros a serem gerados: ");
             quantidade = sc.nextInt();
             sc.nextLine();
-            //quantidade = Integer.parseInt(sc.nextLine());
 
             if (quantidade <= 0) {
                 System.out.println("Erro: A quantidade deve ser um número positivo!");
@@ -123,8 +122,8 @@ public class VetorRan {
                 menor = valor;
         }
 
-        System.out.println("Maior valor: " + maior);
-        System.out.println("Menor valor: " + menor);
+        System.out.println("Maior valor: " + maior.getChave());
+        System.out.println("Menor valor: " + menor.getChave());
     }
 
      
@@ -160,11 +159,11 @@ public class VetorRan {
         return false;
     }
 
-    // public void exibirVetor() {
-    //     System.out.print("Vetor: ");
-    //     for (Item v : vetor) {
-    //         System.out.print(v.getChave() + " ");
-    //     }
-    //     System.out.println();
-    // }
+    public void exibirVetor() {
+        System.out.print("Vetor: ");
+        for (Item v : vetor) {
+            System.out.print(v.getChave() + " ");
+        }
+        System.out.println();
+    }
 }

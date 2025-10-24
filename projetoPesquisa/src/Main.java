@@ -29,6 +29,9 @@ public class Main {
                 case 4:
                     VetorRan.calcularModa();
                     break;
+                case 5:
+                    System.out.println("Encerrando o programa...");
+                    break;
                 case 0:
                     System.out.println("Encerrando o programa...");
                     break;
@@ -37,7 +40,5 @@ public class Main {
             }
         } while (opcao != 0);
         sc.close();
-    }
-
-    
+    }    
 }
