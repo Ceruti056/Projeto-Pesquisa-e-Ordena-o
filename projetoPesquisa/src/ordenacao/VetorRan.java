@@ -1,36 +1,97 @@
 package ordenacao;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.io.*;
+import java.util.*;
 
 public class VetorRan {
-    final static int tam = 5;
+    static Scanner sc = new Scanner(System.in);
     static Item[] vetor;
+    static Random random = new Random();
 
+    public static void gerarArquivoVetorRandomico() {
+        int quantidade;
+        try {
+            // Solicitar a quantidade de números
+            System.out.print("Digite a quantidade de números inteiros a serem gerados: ");
+            quantidade = sc.nextInt();
+            sc.nextLine();
+            //quantidade = Integer.parseInt(sc.nextLine());
 
-    public void criarVetorAleatorio() {
-        vetor = new Item[tam];
-        Random random = new Random();
+            if (quantidade <= 0) {
+                System.out.println("Erro: A quantidade deve ser um número positivo!");
+                return;
+            }
 
-        for (int i = 0; i < tam; i++) {
-            vetor[i] = new Item(random.nextInt(100)); // números aleatórios de 0 a 99
+            // Solicitar o nome do arquivo
+            System.out.print("Digite o nome do arquivo (ex: dados_teste.txt): ");
+            String nomeArquivo = sc.nextLine().trim();
+
+            // Validar o nome do arquivo
+            if (nomeArquivo.isEmpty()) {
+                System.out.println("Erro: O nome do arquivo não pode estar vazio!");
+                return;
+            }
+
+            // Garantir que o nome do arquivo termine com .txt
+            if (!nomeArquivo.toLowerCase().endsWith(".txt")) {
+                nomeArquivo += ".txt";
+            }
+
+            vetor = new Item[quantidade];
+
+            // Gerar números aleatórios e escrever no arquivo
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
+                for (int i = 0; i < quantidade; i++) {
+                    int numero = random.nextInt(10000) + 1;
+                    vetor[i] = new Item(numero);
+                    //vetor[i].setChave(numero);
+                    writer.write(String.valueOf(numero));
+                    writer.newLine();
+                }
+            }
+
+            System.out.println("Arquivo " + nomeArquivo + " criado com sucesso!");
+
+        } catch (NumberFormatException | IOException e) {
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 
-    private static void quickSort() {
+    public static void lerExibirArquivo() {
+        // Solicitar o nome do arquivo
+        System.out.print("Digite o nome do arquivo a ser lido: ");
+        String nomeArquivo = sc.next();
+        sc.nextLine().trim();
+        if (!nomeArquivo.toLowerCase().endsWith(".txt")) {
+            nomeArquivo += ".txt";
+        }
+
+        // Ler o arquivo e carregar os números no vetor
+        try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))) {
+            String[] linhas = reader.lines().toArray(String[]::new);
+            vetor = new Item[linhas.length];
+            for (int i = 0; i < linhas.length; i++) {
+                vetor[i] = new Item(i);
+                vetor[i].setChave(Integer.parseInt(linhas[i]));
+            }
+
+            System.out.println("\nNúmeros carregados:");
+            for (Item n : vetor) {
+                System.out.print(n.getChave() + " ");
+            }
+            System.out.println();
+        } catch (IOException e) {
+            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+        }
+    }
+
+    public static void quickSort() {
         if (vetor == null) { System.out.println("Carregue os dados primeiro!"); return; }
         ordena(0, vetor.length - 1);
         //exibirResultado("QuickSort");
     }
 
-    private static void ordena(int esq, int dir) {
-        vetor = new Item[tam];
+    public static void ordena(int esq, int dir) {
         int i = esq, j = dir;
         int pivo = vetor[(i + j) / 2].getChave();
         do {
@@ -48,12 +109,12 @@ public class VetorRan {
         if (i < dir) ordena(i, dir);
     }
 
-    public void encontrarMaiorMenor() {
+    //ARRUMAR FUNÇÕES DE ANÁLISE AQUI
+    public static void encontrarMaiorMenor() {
         if (vetorVazio())
             return;
-
-        Item maior = vetor[0];
-        Item menor = vetor[0];
+        Item maior = vetor[vetor.length - 1];
+        Item menor = vetor[vetor.length - 1];
 
         for (Item valor : vetor) {
             if (valor.getChave() > maior.getChave())
@@ -67,8 +128,8 @@ public class VetorRan {
     }
 
      
-
-    public void calcularModa() {
+    //ARRUMAR FUNÇÕES DE ANÁLISE AQUI
+    public static void calcularModa() {
         if (vetorVazio())
             return;
 
@@ -99,11 +160,11 @@ public class VetorRan {
         return false;
     }
 
-    public void exibirVetor() {
-        System.out.print("Vetor: ");
-        for (Item v : vetor) {
-            System.out.print(v.getChave() + " ");
-        }
-        System.out.println();
-    }
+    // public void exibirVetor() {
+    //     System.out.print("Vetor: ");
+    //     for (Item v : vetor) {
+    //         System.out.print(v.getChave() + " ");
+    //     }
+    //     System.out.println();
+    // }
 }
