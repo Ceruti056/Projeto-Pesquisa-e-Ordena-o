@@ -9,12 +9,26 @@ public class VetorRan {
     static Random random = new Random();
 
     public static void gerarArquivoVetorRandomico() {
-        int quantidade;
+        
         try {
+            int quantidade;
             // Solicitar a quantidade de números
             System.out.print("Digite a quantidade de números inteiros a serem gerados: ");
-            quantidade = sc.nextInt();
-            sc.nextLine();
+            // quantidade = sc.nextInt();
+            // sc.nextLine();
+            quantidade = Integer.parseInt(sc.nextLine());
+
+            if (quantidade <= 0) {
+                System.out.println("Erro: A quantidade deve ser um número positivo!");
+                return;
+            }
+
+            vetor = new Item[quantidade];
+
+            if (quantidade <= 0) {
+                System.out.println("Erro: A quantidade deve ser um número positivo!");
+                return;
+            }
 
             if (quantidade <= 0) {
                 System.out.println("Erro: A quantidade deve ser um número positivo!");
@@ -36,7 +50,7 @@ public class VetorRan {
                 nomeArquivo += ".txt";
             }
 
-            vetor = new Item[quantidade];
+         
 
             // Gerar números aleatórios e escrever no arquivo
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(nomeArquivo))) {
@@ -57,10 +71,11 @@ public class VetorRan {
     }
 
     public static void lerExibirArquivo() {
+        String nomeArquivo;
         // Solicitar o nome do arquivo
         System.out.print("Digite o nome do arquivo a ser lido: ");
-        String nomeArquivo = sc.next();
-        sc.nextLine().trim();
+        nomeArquivo = sc.nextLine().trim();
+        //sc.nextLine().trim();
         if (!nomeArquivo.toLowerCase().endsWith(".txt")) {
             nomeArquivo += ".txt";
         }
@@ -85,7 +100,10 @@ public class VetorRan {
     }
 
     public static void quickSort() {
-        if (vetor == null) { System.out.println("Carregue os dados primeiro!"); return; }
+        if (vetor == null) { 
+            System.out.println("Carregue os dados primeiro!"); 
+            return; 
+        }
         ordena(0, vetor.length - 1);
         //exibirResultado("QuickSort");
     }
@@ -108,12 +126,13 @@ public class VetorRan {
         if (i < dir) ordena(i, dir);
     }
 
-    //ARRUMAR FUNÇÕES DE ANÁLISE AQUI
     public static void encontrarMaiorMenor() {
-        if (vetorVazio())
-            return;
         Item maior = vetor[vetor.length - 1];
         Item menor = vetor[vetor.length - 1];
+        
+        if (vetorVazio()){
+            return;
+        }
 
         for (Item valor : vetor) {
             if (valor.getChave() > maior.getChave())
@@ -126,11 +145,13 @@ public class VetorRan {
         System.out.println("Menor valor: " + menor.getChave());
     }
 
-     
-    //ARRUMAR FUNÇÕES DE ANÁLISE AQUI
     public static void calcularModa() {
-        if (vetorVazio())
+        Item moda = vetor[0];
+        int maxFreq = 0;
+
+        if (vetorVazio()){
             return;
+        }
 
         Map<Integer, Integer> frequencia = new HashMap<>();
 
@@ -138,17 +159,18 @@ public class VetorRan {
             frequencia.put(valor.getChave(), frequencia.getOrDefault(valor.getChave(), 0) + 1);
         }
 
-        Item moda = vetor[0];
-        int maxFreq = 0;
-
         for (Map.Entry<Integer, Integer> entry : frequencia.entrySet()) {
             if (entry.getValue() > maxFreq) {
                 moda = new Item(entry.getKey());
                 maxFreq = entry.getValue();
             }
         }
-
-        System.out.println("Moda: " + moda.getChave() + " (repetido " + maxFreq + " vezes)");
+        
+        if (maxFreq <= 1) {
+            System.out.println("Não há moda (nenhum número se repete no vetor).");
+        } else {
+            System.out.println("Moda: " + moda + " (repetido " + maxFreq + " vezes)");
+        }
     }
 
     private static boolean vetorVazio() {
@@ -158,12 +180,27 @@ public class VetorRan {
         }
         return false;
     }
-
-    public void exibirVetor() {
-        System.out.print("Vetor: ");
-        for (Item v : vetor) {
-            System.out.print(v.getChave() + " ");
+    
+    public static int[] getVetorComoArray() {
+        if (vetor == null) {
+            System.out.println("Vetor não foi criado ou carregado!");
+            return null;
         }
-        System.out.println();
+
+        int[] numeros = new int[vetor.length];
+        for (int i = 0; i < vetor.length; i++) {
+            numeros[i] = vetor[i].getChave();
+        }
+        return numeros;
+    }
+
+    public static void ordenarVetor() {
+        if (vetor == null || vetor.length == 0) {
+            System.out.println("Vetor não foi criado ou está vazio.");
+            return;
+        }
+
+        quickSort();
+        System.out.println("Vetor ordenado com sucesso!");
     }
 }
