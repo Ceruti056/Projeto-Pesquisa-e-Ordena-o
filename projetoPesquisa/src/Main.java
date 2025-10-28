@@ -110,7 +110,7 @@ public class Main {
                 break;
             case 2:
                 VetorRan.quickSort();
-                numeros = VetorRan.getVetorComoArray(); 
+                numeros = VetorRan.getVetorComoArray();
                 encontrado = Pesquisa.pesquisaSeqMelhorada(x, numeros);
                 break;
             case 3:

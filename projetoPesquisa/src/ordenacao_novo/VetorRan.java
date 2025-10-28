@@ -127,9 +127,6 @@ public class VetorRan {
         }
     }
 
-
-
-
     /**
      * Encontra e exibe o maior e o menor valor do vetor.
      */
